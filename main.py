@@ -16,9 +16,18 @@ LINE = (
 )
 
 
+def validate_line(line: str) -> None:
+    """Fail loudly if the entry line breaks the competition rules."""
+    if not 1 <= len(line) <= 200:
+        raise SystemExit(
+            f"entry line must be 1-200 characters, got {len(line)}"
+        )
+    if line.strip() != line or "\n" in line or "\r" in line:
+        raise SystemExit("entry line must be a single line with no padding")
+
+
 def main() -> None:
-    assert 1 <= len(LINE) <= 200, f"line is {len(LINE)} characters"
-    assert LINE.strip() == LINE and "\n" not in LINE
+    validate_line(LINE)
     out_dir = "/output"
     os.makedirs(out_dir, exist_ok=True)
     with open(os.path.join(out_dir, "entry.txt"), "w", encoding="utf-8") as f:
